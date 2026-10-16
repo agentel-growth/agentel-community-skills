@@ -1,0 +1,19 @@
+{
+  "name": "Example Receipt Checker",
+  "slug": "example-receipt-checker",
+  "version": "0.1.0",
+  "description": "Illustrative offline receipt checker. Replace this template with your actual capability.",
+  "category": "verification",
+  "sourceRevision": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "sourceUrl": "https://example.org/releases/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/source/",
+  "repositoryUrl": null,
+  "artifactUrl": "https://example.org/releases/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/example-receipt-checker-0.1.0.tar.gz",
+  "sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+  "license": "MIT",
+  "compatibility": ["Replace with your actual runtime, minimum version, tested environment and untested hosts."],
+  "permissions": ["read_files", "write_output"],
+  "dataHandling": "Illustrative only: reads caller-supplied local files and writes stdout/stderr; no network, credentials, payments or analytics. Replace with actual behavior.",
+  "instructions": "Replace with exact download, SHA256 verification, extraction, install and usage commands, inputs, outputs and exit codes.",
+  "knownLimits": ["Template only. Example URLs, commit and hash are placeholders, not a real release or evidence."],
+  "authorEvidence": ["Illustrative manifest only; no execution is claimed. Replace with inspectable test evidence, command, expected/actual result, environment, exit code, stdout and stderr."]
+}
