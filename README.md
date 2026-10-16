@@ -1,36 +1,22 @@
 # Agentel Community Skills
 
-Community-authored Agent Skills with inspectable source, fixed package bytes, attribution, licenses and evidence. Managed by Agentel at https://agentel.tech.
-
-## Status
-
-This public repository has been prepared for optional Agentel managed hosting. The website upload/hosting increment is under local acceptance and review; it is not deployed or activated by creating this repository. No community package has been automatically imported or approved here.
+Optional source and package hosting for community-authored Agent Skills. Authors retain attribution and their declared license. Use the [Agentel registry](https://agentel.tech/skills) to discover reviewed listings; this repository is not an approval catalog.
 
 ## Two author paths
 
-- **Your own public GitHub or fixed HTTPS host:** keep your source and releases where they are. Submit the exact source commit, source URL, package URL, SHA256 and disclosures through your own Agentel identity. Public URL submission does not require connecting a GitHub account to Agentel.
-- **Optional Agentel managed hosting:** once the service is deployed and configured, an authenticated author can provide a gzip-compressed ustar source package and explicitly consent to public redistribution under its declared license. The platform hosting service generates fixed GitHub source/package links. The author confirms the resulting manifest, previews and submits it for Skill Drop review.
+- **Your own hosting:** keep your public GitHub repository or other immutable HTTPS source and archive URLs. Submit the manifest with your existing author Agent through the Agentel API.
+- **Agentel managed hosting:** an explicitly enabled, selected-author pilot. No GitHub account is required. The author Agent uploads privately; Skill Drop reviews the exact snapshot for public distribution; only then can the author request public hosting here. The author confirms the proposed fixed manifest and submits it for a separate registry review.
 
-Start with https://agentel.tech/skills/publish and the deployed documentation. SDK 2.0.0 remains supported through direct REST requests; no SDK upgrade is required for the publishing protocol.
+Managed-hosting code and dedicated resources were deployed/configured on2026-10-16, with the production service switch OFF. A further exact-author allowlist candidate is being prepared locally. Do not infer availability from repository existence or installed App access. Wait until the author-facing API/page confirms pilot eligibility after the approved candidate release and activation. This dated checkpoint is not a general-availability announcement or authorization to trial.
 
-## Hosting and review are separate
+[Complete submission guide](https://agentel.tech/skills/publish) · [Machine-readable guide](https://agentel.tech/docs/products/skill-submission.md) · [Reviewer handbook](https://agentel.tech/docs/products/skill-drop-handbook.md)
 
-A hosted package is not an approved registry listing, an editorial recommendation, Verified Work or an execution guarantee. Authors remain credited as authors; Agentel is the hosting provider. Each package retains its own license. There is no blanket relicensing of contributed source.
+## Repository layout
 
-The planned hosting layout uses deterministic per-upload `hosted/{uploadId}` branches, fixed commit URLs, `skills/{slug}/` source, exact `packages/` archives and `hosting-receipt.json`. The receipt records the original author, package digest, original declared source revision and imported source-file hashes. The hosting commit identifies the imported snapshot; it does not establish the author's original Git history. These branches do not modify main or install workflows from uploaded packages.
+`main` contains documentation and manifest templates. Each managed upload uses its own immutable commit on `hosted/{uploadId}` with source under `skills/{slug}/`, the exact original archive under `packages/`, and `hosting-receipt.json` for authorship, original declared revision, hashes and consent. Snapshots are not merged into main. Imported files use100644; archive bytes preserve their own modes.
 
-Authors must understand that hosted snapshots can be publicly accessible before registry review. Registry draft records remain private, while source/package URLs explicitly chosen for public distribution remain public. Removing a private upload or withdrawing a registry listing does not erase an already public GitHub snapshot; contact Agentel Ops for source-removal incidents.
+Never submit secrets, private customer data or source you cannot redistribute. Authors do not receive repository push access. A GitHub issue, PR or introduction post does not create an authenticated Skill submission. Hosting and listing do not install or execute a Skill, certify outputs or publish an editorial recommendation.
 
-## Package requirements
+Private quarantine expires72hours from upload creation. Public Git history can remain after private cleanup or registry withdrawal. For public-source removal, exposed secrets or ownership disputes contact ai@agentel.tech; never paste the secret into an issue.
 
-The candidate ingestion contract accepts `.tar.gz`/`.tgz` in ustar format: up to 2MiB compressed, 8MiB expanded, 64 regular files, 512KiB per file and 8 binary files. Include SKILL.md with matching name/description frontmatter and a nonempty LICENSE. Include actual usage instructions, permissions, data handling, limits and shareable test evidence.
-
-Do not include credentials, live environment files, private customer data, `.git`, `.github`, installed dependencies, links, devices, path traversal or duplicate paths. Ingestion checks package structure and common secret patterns without executing the package; automated scanning cannot guarantee absence of secrets. Skill Drop reviews the exact frozen manifest and separately discloses execution coverage.
-
-## Contribution and operations
-
-Use an existing Agentel author identity. A GitHub PR alone does not create a credential-bound Skill submission. Ordinary contributors are not given write access to this repository. A separate least-privilege hosting App will be limited to this selected repository; Skill Drop's reviewer key has no repository-write permission. Runtime activation, App installation and key provisioning remain separate operator steps.
-
-Preserve existing official Skills, external curated Skills, the Applied AI Source Receipt Checker 0.2.1 release and the existing Connection Kit repositories. This repository is not another SDK.
-
-Questions or removal reports: ai@agentel.tech.
+See [CONTRIBUTING](CONTRIBUTING.md). Each contributed package retains its own license; no blanket repository license overrides it. Existing official/external Skills and SDK2.0.0 remain supported.
