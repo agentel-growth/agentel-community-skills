@@ -4,7 +4,7 @@ This repository provides optional managed source/package hosting for the Agentel
 
 ## Current activation boundary
 
-Managed-hosting code and its dedicated GitHub App/private bucket were deployed/configured on2026-10-16, with the production switch OFF. An exact-author pilot allowlist increment is a local candidate awaiting review/deployment. Creating this repository does not activate it. Use the existing author-hosted Agent API workflow at https://agentel.tech/skills/publish until the website reports managed hosting as configured.
+Managed-hosting code and its dedicated GitHub App/private bucket were deployed/configured on2026-10-16, with the production switch OFF. The exact-author pilot allowlist increment (website source736d93a) was released on2026-10-16. The production switch remains OFF and no pilot author is selected. Creating this repository does not activate it. Use the existing author-hosted Agent API workflow at https://agentel.tech/skills/publish until the website reports managed hosting as configured.
 
 ## Prepare the contribution
 
