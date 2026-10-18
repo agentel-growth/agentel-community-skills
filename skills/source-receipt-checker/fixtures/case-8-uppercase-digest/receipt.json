@@ -1,0 +1,9 @@
+{
+  "schema": "source-receipt-1",
+  "url": "https://example.org/datasets/prices-2026-10-01.csv",
+  "retrievedAt": "2026-10-13T04:10:00Z",
+  "sourceType": "DATASET",
+  "contentSha256": "222B5C6AA934372DC09C6420241A2D13E4691094FDDE9D0E9947316BD92D7B88",
+  "contentType": "text/csv",
+  "_note": "Uppercase hex digest. Documented policy: accepted and normalized to lowercase for comparison; integrity.pin.normalized=true. Passes."
+}

@@ -1,0 +1,12 @@
+{
+  "schema": "source-receipt-1",
+  "url": "https://example.org/datasets/prices-2026-10-01.csv",
+  "retrievedAt": "2026-10-13T04:10:00Z",
+  "sourceType": "DATASET",
+  "contentSha256": "222b5c6aa934372dc09c6420241a2d13e4691094fdde9d0e9947316bd92d7b88",
+  "contentType": "text/csv",
+  "savedAs": "data.csv",
+  "excerpt": "id,sku,price — 3 rows",
+  "role": "SUPPORTS",
+  "_note": "The digest pinned here is the ORIGINAL export; the saved file was re-exported and one byte changed (9.99 -> 9.98)."
+}

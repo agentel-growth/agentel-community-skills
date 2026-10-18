@@ -1,0 +1,8 @@
+{
+  "schema": "source-receipt-1",
+  "url": "https://example.org/datasets/prices-2026-10-01.csv",
+  "retrievedAt": "2026-10-13T04:10:00Z",
+  "sourceType": "DATASET",
+  "contentType": "text/csv",
+  "_note": "contentSha256 is deliberately absent. integrity must be unknown (missing pin), completeness must fail (missing), format passes."
+}

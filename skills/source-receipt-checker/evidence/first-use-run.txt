@@ -1,0 +1,110 @@
+Source Receipt Checker — first-use run
+declared: 2026-10-15  version 0.3.1  (dispositions declared before running)
+live cases served from http://127.0.0.1:56472 (local only)
+
+PASS  case-1-matching
+      expected integrity=pass completeness=pass format=pass verdict=pass  exit 0
+      got      integrity=pass completeness=pass format=pass verdict=pass  exit 0
+      integrity.pin=valid
+
+PASS  case-2-changed
+      expected integrity=fail completeness=pass format=pass verdict=fail  exit 1
+      got      integrity=fail completeness=pass format=pass verdict=fail  exit 1
+      integrity.pin=valid
+
+PASS  case-3-html-as-pdf
+      expected integrity=pass completeness=pass format=fail verdict=fail  exit 1
+      got      integrity=pass completeness=pass format=fail verdict=fail  exit 1
+      integrity.pin=valid
+      format: content looks like html but is labelled application/pdf (suspected mismatch, heuristic)
+
+PASS  case-4-incomplete-receipt
+      expected integrity=pass completeness=fail format=pass verdict=fail  exit 1
+      got      integrity=pass completeness=fail format=pass verdict=fail  exit 1
+      integrity.pin=valid
+      missing: sourceType
+
+PASS  case-5-null-receipt
+      expected structured error RECEIPT_NOT_OBJECT + exit 2
+      got error=RECEIPT_NOT_OBJECT verdict=error exit 2
+
+PASS  case-6-invalid-digest
+      expected integrity=unknown completeness=fail format=pass verdict=fail  exit 1
+      got      integrity=unknown completeness=fail format=pass verdict=fail  exit 1
+      integrity.pin=invalid
+      invalid: contentSha256
+
+PASS  case-7-schema-violations
+      expected integrity=pass completeness=fail format=pass verdict=fail  exit 1
+      got      integrity=pass completeness=fail format=pass verdict=fail  exit 1
+      integrity.pin=valid
+      invalid: url, retrievedAt, sourceType
+
+PASS  case-8-uppercase-digest
+      expected integrity=pass completeness=pass format=pass verdict=pass  exit 0
+      got      integrity=pass completeness=pass format=pass verdict=pass  exit 0
+      integrity.pin=valid (normalized)
+
+PASS  case-9-missing-digest
+      expected integrity=unknown completeness=fail format=pass verdict=fail  exit 1
+      got      integrity=unknown completeness=fail format=pass verdict=fail  exit 1
+      integrity.pin=missing
+      missing: contentSha256
+
+PASS  case-10-malformed-json
+      expected structured error RECEIPT_MALFORMED_JSON + exit 2
+      got error=RECEIPT_MALFORMED_JSON verdict=error exit 2
+
+PASS  case-11-missing-file
+      expected structured error FILE_UNREADABLE + exit 2
+      got error=FILE_UNREADABLE verdict=error exit 2
+
+PASS  case-12-bad-schema-const
+      expected integrity=pass completeness=fail format=pass verdict=fail  exit 1
+      got      integrity=pass completeness=fail format=pass verdict=fail  exit 1
+      integrity.pin=valid
+      invalid: schema
+
+PASS  case-13-notes-not-string
+      expected integrity=pass completeness=fail format=pass verdict=fail  exit 1
+      got      integrity=pass completeness=fail format=pass verdict=fail  exit 1
+      integrity.pin=valid
+      invalid: notes
+
+PASS  case-14-live-unchanged
+      expected integrity=pass completeness=pass format=pass live=unchanged verdict=pass  exit 0
+      got      integrity=pass completeness=pass format=pass live=unchanged verdict=pass  exit 0
+      integrity.pin=valid
+      live: status=unchanged http=200 (live body matches the pinned digest)
+
+PASS  case-15-live-changed
+      expected integrity=pass completeness=pass format=pass live=changed verdict=fail  exit 1
+      got      integrity=pass completeness=pass format=pass live=changed verdict=fail  exit 1
+      integrity.pin=valid
+      live: status=changed http=200 (live body differs from the pinned digest)
+
+PASS  case-16-live-unreachable
+      expected integrity=pass completeness=pass format=pass live=unreachable verdict=partial  exit 1
+      got      integrity=pass completeness=pass format=pass live=unreachable verdict=partial  exit 1
+      integrity.pin=valid
+      live: status=unreachable http=500 (HTTP 500; no claim about why (unreachable ≠ removed))
+
+PASS  case-17-live-redirected
+      expected integrity=pass completeness=pass format=pass live=redirected verdict=partial  exit 1
+      got      integrity=pass completeness=pass format=pass live=redirected verdict=partial  exit 1
+      integrity.pin=valid
+      live: status=redirected http=302 (HTTP 302 redirect not followed (following it would be a second request))
+
+PASS  case-18-live-too-large
+      expected integrity=pass completeness=pass format=pass live=too_large verdict=partial  exit 1
+      got      integrity=pass completeness=pass format=pass live=too_large verdict=partial  exit 1
+      integrity.pin=valid
+      live: status=too_large http=200 (response body exceeded 4096 bytes; digest not computed, so no unchanged/changed claim)
+
+PASS  case-19-live-timeout
+      expected integrity=pass completeness=pass format=pass live=unreachable verdict=partial  exit 1
+      got      integrity=pass completeness=pass format=pass live=unreachable verdict=partial  exit 1
+      integrity.pin=valid
+      live: status=unreachable http=- (timeout (headers or body); no claim about why (unreachable ≠ removed))
+
+result: 19/19 cases matched the declared dispositions

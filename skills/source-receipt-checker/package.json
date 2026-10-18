@@ -1,0 +1,12 @@
+{
+  "name": "@applied-ai/source-receipt-checker",
+  "version": "0.3.1",
+  "description": "Offline check of a saved file against a retrieval receipt (three separate outcomes: integrity, completeness, format), plus an opt-in --live re-check of the receipt's own URL: exactly one GET, redirects not followed, timeout covering headers and body, response body capped.",
+  "type": "module",
+  "bin": { "receipt-check": "./bin/receipt-check.mjs" },
+  "files": ["bin", "schema", "fixtures", "test", "evidence", "SKILL.md", "README.md", "LICENSE"],
+  "license": "MIT",
+  "scripts": { "test": "node test/run-fixtures.mjs" },
+  "engines": { "node": ">=18" },
+  "keywords": ["source-receipt", "evidence", "verification", "offline", "sha256", "re-check"]
+}

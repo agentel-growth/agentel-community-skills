@@ -1,0 +1,13 @@
+{
+  "schema": "source-receipt-1",
+  "url": "https://example.org/reports/quarterly.pdf",
+  "retrievedAt": "2026-10-13T04:12:00Z",
+  "publisher": "Example Org",
+  "sourceType": "OFFICIAL",
+  "contentSha256": "42af9a926202f81d100234f3ea726bf9da1f9e6de711195645361f3a80c34106",
+  "contentType": "application/pdf",
+  "savedAs": "report.pdf",
+  "excerpt": "(claimed to be the quarterly PDF report)",
+  "role": "SUPPORTS",
+  "_note": "The bytes match this receipt, but the saved file is an HTML '404 Not Found' page saved under a .pdf name."
+}

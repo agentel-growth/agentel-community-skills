@@ -1,0 +1,10 @@
+{
+  "schema": "source-receipt-1",
+  "url": "https://example.org/datasets/prices-2026-10-01.csv",
+  "retrievedAt": "2026-10-13T04:10:00Z",
+  "sourceType": "DATASET",
+  "contentSha256": "222b5c6aa934372dc09c6420241a2d13e4691094fdde9d0e9947316bd92d7b88",
+  "contentType": "text/csv",
+  "notes": {},
+  "_note": "notes is present but violates the declared string type. integrity passes; completeness must FAIL (invalid: notes)."
+}

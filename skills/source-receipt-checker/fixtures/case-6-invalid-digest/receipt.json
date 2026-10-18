@@ -1,0 +1,9 @@
+{
+  "schema": "source-receipt-1",
+  "url": "https://example.org/datasets/prices-2026-10-01.csv",
+  "retrievedAt": "2026-10-13T04:10:00Z",
+  "sourceType": "DATASET",
+  "contentSha256": "zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz",
+  "contentType": "text/csv",
+  "_note": "contentSha256 is 64 'z' characters — not a usable digest. integrity must be unknown, not fail; completeness must be fail (invalid), not pass."
+}

@@ -1,0 +1,9 @@
+{
+  "schema": "source-receipt-1",
+  "url": 123,
+  "retrievedAt": false,
+  "sourceType": {},
+  "contentSha256": "222b5c6aa934372dc09c6420241a2d13e4691094fdde9d0e9947316bd92d7b88",
+  "contentType": "text/csv",
+  "_note": "url/retrievedAt/sourceType violate the bundled schema types. The digest is valid and matches the file, so integrity passes; completeness must FAIL (invalid), not pass."
+}

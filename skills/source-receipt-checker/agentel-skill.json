@@ -1,0 +1,61 @@
+{
+  "manifestVersion": "agentel.skill.manifest.v0",
+  "name": "Source Receipt Checker",
+  "slug": "source-receipt-checker",
+  "version": "0.3.1",
+  "creator": "Applied AI (@applied-ai)",
+  "category": "verification",
+  "type": "tool",
+  "origin": "network",
+  "priceType": "FREE",
+  "license": "MIT",
+  "compatibility": ["Claude Code", "Codex", "Gemini CLI", "Cursor", "OpenClaw", "REST"],
+  "permissions": ["read_files", "write_output", "network_request"],
+  "dataHandling": "Local CLI by default (local_only). With the opt-in --live flag the tool issues exactly one GET to the receipt's own URL (redirects not followed); no other network activity, no credentials, no uploads, no analytics. The response body is streamed and capped.",
+  "reviewStatus": "not_reviewed",
+  "publisherStatus": "community",
+  "description": "Check a saved file against a retrieval receipt, offline. Returns three separate outcomes — integrity (bytes vs the pinned sha256), completeness (every required field present AND well-formed, plus the declared constraints on `schema` and `notes`), and format (does the content match its label) — and never collapses them into one verdict. An incomplete or unusable pin leaves integrity 'unknown', never 'failed'. 0.3.0 introduced an opt-in --live mode (one GET to the receipt's own URL); 0.3.1 makes the live declaration match the code: redirects are NOT followed ('redirected'), the timeout covers headers and body, and the body is capped ('too_large').",
+  "install": "node bin/receipt-check.mjs <receipt.json> <file> [--live]   (Node >= 18, zero dependencies)",
+  "entrypoint": "bin/receipt-check.mjs",
+  "schemaPath": "schema/source-receipt.schema.json",
+  "skillMd": "SKILL.md",
+  "exitCodes": { "0": "pass", "1": "fail or partial", "2": "input error (structured JSON)" },
+  "errorCodes": ["USAGE", "RECEIPT_UNREADABLE", "RECEIPT_MALFORMED_JSON", "RECEIPT_NOT_OBJECT", "FILE_UNREADABLE"],
+  "liveStatuses": ["not_requested", "unchanged", "changed", "redirected", "too_large", "unreachable", "no_pin"],
+  "liveKnobs": {
+    "SOURCE_RECEIPT_LIVE_TIMEOUT_MS": "request timeout covering headers AND body; default 10000",
+    "SOURCE_RECEIPT_LIVE_MAX_BYTES": "maximum streamed response body; default 8388608"
+  },
+  "policies": {
+    "schemaAlignment": "the bundled schema and the CLI agree: contentSha256 pattern is ^[0-9a-fA-F]{64}$ (case-insensitive digest) with the uppercase-normalization documented in the schema description",
+    "completeness": "checks presence AND schema well-formedness (type / enum / digest format), and validates declared constraints on optional fields when present (the const on `schema`, the string type on `notes`); missing and invalid are reported in separate arrays",
+    "digestCase": "uppercase hex digests are accepted and normalized to lowercase for comparison; the normalization is reported as integrity.pin.normalized",
+    "unusablePin": "a contentSha256 that is not 64 hex characters is an unusable pin: integrity is 'unknown', never a byte mismatch",
+    "errors": "unreadable / malformed / non-object receipt and unreadable target files return a stable JSON input error with exit 2, never a stack trace",
+    "format": "heuristic, reported as 'suspected'",
+    "live": "opt-in (--live); EXACTLY ONE GET to the receipt's own URL; no credentials; redirects are NOT followed (a 3xx is 'redirected'); the timeout covers headers and body; the body is streamed and capped ('too_large' rather than compared). 'unreachable' is absence of evidence, never evidence of removal"
+  },
+  "trustCues": [
+    "offline by default: no network request unless you pass --live; no analytics, no credentials, no payments",
+    "zero dependencies (Node >= 18)",
+    "MIT licensed",
+    "example run with expected dispositions declared BEFORE running, across 19 cases including boundary and live cases: fixtures/expected.json + evidence/first-use-run.txt (19/19 matched)"
+  ],
+  "limits": [
+    "format check is a heuristic (first 512 bytes) and is reported as 'suspected'",
+    "completeness validates the fields this schema declares; it is not a general JSON-Schema validator",
+    "the --live mode proves whether the fetched body matches the pin; it does not establish live availability, authenticity, or why a source did not answer ('unreachable' ≠ 'removed')",
+    "redirects are deliberately not followed, so a URL that only answers with a 3xx is reported as 'redirected', not resolved",
+    "the live tests use a local 127.0.0.1 server; no external host was contacted",
+    "says nothing about whether the data is correct, only whether bytes match the pin"
+  ],
+  "notIncluded": [
+    "any fact-checking, scoring, or judgement of content quality",
+    "crawling, scheduling, or monitoring of sources (one opt-in GET per invocation only)"
+  ],
+  "firstUseEvidence": "evidence/first-use-run.txt",
+  "sourceUrl": null,
+  "repositoryUrl": null,
+  "status": "draft — not published to any registry; pending review",
+  "note": "This descriptive manifest is NOT the API submission manifest. The API requires exactly the 17 keys of skill-publication.schema.json; the flat manifest is prepared separately."
+}

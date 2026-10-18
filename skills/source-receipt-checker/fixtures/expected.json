@@ -1,0 +1,27 @@
+{
+  "declaredAt": "2026-10-15",
+  "version": "0.3.1",
+  "what": "Expected dispositions for the corrected candidate, declared BEFORE running. The runner fails if any check, exit code or error code differs.",
+  "rule": "integrity, completeness and format are separate outcomes. An incomplete OR unusable pin is not corrupted bytes: integrity is 'unknown', never 'fail'. Missing fields and invalid fields are separate. Bytes that match the pin can still be the wrong object (integrity pass + format fail). Input errors are structured JSON with exit 2.",
+  "cases": [
+    { "case": "case-1-matching", "file": "data.csv", "exit": 0, "expect": { "integrity": "pass", "completeness": "pass", "format": "pass", "verdict": "pass" } },
+    { "case": "case-2-changed", "file": "data.csv", "exit": 1, "expect": { "integrity": "fail", "completeness": "pass", "format": "pass", "verdict": "fail" } },
+    { "case": "case-3-html-as-pdf", "file": "report.pdf", "exit": 1, "expect": { "integrity": "pass", "completeness": "pass", "format": "fail", "verdict": "fail" } },
+    { "case": "case-4-incomplete-receipt", "file": "data.csv", "exit": 1, "expect": { "integrity": "pass", "completeness": "fail", "format": "pass", "verdict": "fail" } },
+    { "case": "case-5-null-receipt", "file": "data.csv", "exit": 2, "expectError": "RECEIPT_NOT_OBJECT" },
+    { "case": "case-6-invalid-digest", "file": "data.csv", "exit": 1, "expect": { "integrity": "unknown", "completeness": "fail", "format": "pass", "verdict": "fail" } },
+    { "case": "case-7-schema-violations", "file": "data.csv", "exit": 1, "expect": { "integrity": "pass", "completeness": "fail", "format": "pass", "verdict": "fail" } },
+    { "case": "case-8-uppercase-digest", "file": "data.csv", "exit": 0, "expect": { "integrity": "pass", "completeness": "pass", "format": "pass", "verdict": "pass" } },
+    { "case": "case-9-missing-digest", "file": "data.csv", "exit": 1, "expect": { "integrity": "unknown", "completeness": "fail", "format": "pass", "verdict": "fail" } },
+    { "case": "case-10-malformed-json", "file": "data.csv", "exit": 2, "expectError": "RECEIPT_MALFORMED_JSON" },
+    { "case": "case-11-missing-file", "file": "absent.csv", "exit": 2, "expectError": "FILE_UNREADABLE" },
+    { "case": "case-12-bad-schema-const", "file": "data.csv", "exit": 1, "expect": { "integrity": "pass", "completeness": "fail", "format": "pass", "verdict": "fail" } },
+    { "case": "case-13-notes-not-string", "file": "data.csv", "exit": 1, "expect": { "integrity": "pass", "completeness": "fail", "format": "pass", "verdict": "fail" } },
+    { "case": "case-14-live-unchanged", "file": "data.csv", "live": true, "exit": 0, "expect": { "integrity": "pass", "completeness": "pass", "format": "pass", "live": "unchanged", "verdict": "pass" } },
+    { "case": "case-15-live-changed", "file": "data.csv", "live": true, "exit": 1, "expect": { "integrity": "pass", "completeness": "pass", "format": "pass", "live": "changed", "verdict": "fail" } },
+    { "case": "case-16-live-unreachable", "file": "data.csv", "live": true, "exit": 1, "expect": { "integrity": "pass", "completeness": "pass", "format": "pass", "live": "unreachable", "verdict": "partial" } },
+    { "case": "case-17-live-redirected", "file": "data.csv", "live": true, "exit": 1, "expect": { "integrity": "pass", "completeness": "pass", "format": "pass", "live": "redirected", "verdict": "partial" } },
+    { "case": "case-18-live-too-large", "file": "data.csv", "live": true, "exit": 1, "expect": { "integrity": "pass", "completeness": "pass", "format": "pass", "live": "too_large", "verdict": "partial" } },
+    { "case": "case-19-live-timeout", "file": "data.csv", "live": true, "exit": 1, "expect": { "integrity": "pass", "completeness": "pass", "format": "pass", "live": "unreachable", "verdict": "partial" } }
+  ]
+}
