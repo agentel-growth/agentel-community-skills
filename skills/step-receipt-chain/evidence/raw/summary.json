@@ -1,0 +1,354 @@
+{
+  "node": "v26.4.0",
+  "platform": "darwin",
+  "evidenceFormat": "one JSON record per case: {case, argv, exit, stdout, stderr}; stdout/stderr are verbatim strings",
+  "anchors": {
+    "normalTerminalSha256": "e91c121eade041814413011328166d1bfb6859cfbb0600f05da5c26a08446fc4"
+  },
+  "results": {
+    "normal-emit": {
+      "expected": {
+        "exit": 0,
+        "receipts": 2,
+        "s3Pin": "OK",
+        "s3Outcome": "MATCH",
+        "s4Outcome": "MATCH",
+        "s3Control": "FAILED_AS_EXPECTED",
+        "s4Control": "NOT_PROVIDED"
+      },
+      "actual": {
+        "exit": 0,
+        "receipts": 2,
+        "s3Pin": "OK",
+        "s3Outcome": "MATCH",
+        "s4Outcome": "MATCH",
+        "s3Control": "FAILED_AS_EXPECTED",
+        "s4Control": "NOT_PROVIDED"
+      },
+      "pass": true
+    },
+    "normal-verify": {
+      "expected": {
+        "exit": 0,
+        "ok": true,
+        "receipts": 2,
+        "integrityErrors": 0,
+        "outcomeMatch": 2,
+        "outcomeMismatch": 0,
+        "controlFailedAsExpected": 1,
+        "completeness": "checked",
+        "contentBound": false,
+        "errorCodes": [],
+        "warningCodes": [
+          "CONTENT_UNBOUND"
+        ]
+      },
+      "actual": {
+        "exit": 0,
+        "errorCodes": [],
+        "warningCodes": [
+          "CONTENT_UNBOUND"
+        ],
+        "ok": true,
+        "receipts": 2,
+        "integrityErrors": 0,
+        "outcomeMatch": 2,
+        "outcomeMismatch": 0,
+        "controlFailedAsExpected": 1,
+        "completeness": "checked",
+        "contentBound": false
+      },
+      "pass": true
+    },
+    "normal-verify-content": {
+      "expected": {
+        "exit": 0,
+        "ok": true,
+        "completeness": "checked",
+        "contentBound": true,
+        "errorCodes": [],
+        "warningCodes": []
+      },
+      "actual": {
+        "exit": 0,
+        "errorCodes": [],
+        "warningCodes": [],
+        "ok": true,
+        "completeness": "checked",
+        "contentBound": true
+      },
+      "pass": true
+    },
+    "invalid-verify": {
+      "expected": {
+        "exit": 1,
+        "ok": false,
+        "errorCodes": [
+          "CHAIN_BROKEN",
+          "CHAIN_INCOMPLETE",
+          "CHECKS_STALE",
+          "OUTCOME_MISMATCH",
+          "RECEIPT_MODIFIED"
+        ],
+        "warningCodes": []
+      },
+      "actual": {
+        "exit": 1,
+        "errorCodes": [
+          "CHAIN_BROKEN",
+          "RECEIPT_MODIFIED",
+          "CHECKS_STALE",
+          "OUTCOME_MISMATCH",
+          "CHAIN_INCOMPLETE"
+        ],
+        "warningCodes": [],
+        "ok": false
+      },
+      "pass": true
+    },
+    "insufficient-emit": {
+      "expected": {
+        "exit": 0,
+        "receipts": 1,
+        "s3ObservedStatus": "UNKNOWN",
+        "s3Pin": "UNUSABLE",
+        "s3Outcome": "NOT_CHECKED",
+        "s3Control": "NOT_PROVIDED"
+      },
+      "actual": {
+        "exit": 0,
+        "receipts": 1,
+        "s3ObservedStatus": "UNKNOWN",
+        "s3Pin": "UNUSABLE",
+        "s3Outcome": "NOT_CHECKED",
+        "s3Control": "NOT_PROVIDED"
+      },
+      "pass": true
+    },
+    "tail-drop-verify": {
+      "expected": {
+        "exit": 1,
+        "ok": false,
+        "receipts": 1,
+        "integrityErrors": 0,
+        "errorCodes": [
+          "CHAIN_INCOMPLETE"
+        ],
+        "warningCodes": []
+      },
+      "actual": {
+        "exit": 1,
+        "errorCodes": [
+          "CHAIN_INCOMPLETE"
+        ],
+        "warningCodes": [],
+        "ok": false,
+        "receipts": 1,
+        "integrityErrors": 0
+      },
+      "pass": true
+    },
+    "tail-drop-unanchored": {
+      "expected": {
+        "exit": 1,
+        "ok": false,
+        "receipts": 1,
+        "integrityErrors": 0,
+        "errorCodes": [
+          "COMPLETENESS_UNANCHORED"
+        ],
+        "warningCodes": []
+      },
+      "actual": {
+        "exit": 1,
+        "errorCodes": [
+          "COMPLETENESS_UNANCHORED"
+        ],
+        "warningCodes": [],
+        "ok": false,
+        "receipts": 1,
+        "integrityErrors": 0
+      },
+      "pass": true
+    },
+    "empty-object": {
+      "expected": {
+        "exit": 2,
+        "ok": false,
+        "invalid": true,
+        "errorCodes": [
+          "INVALID_CHAIN"
+        ],
+        "warningCodes": []
+      },
+      "actual": {
+        "exit": 2,
+        "errorCodes": [
+          "INVALID_CHAIN"
+        ],
+        "warningCodes": [],
+        "ok": false,
+        "invalid": true
+      },
+      "pass": true
+    },
+    "empty-chain": {
+      "expected": {
+        "exit": 2,
+        "ok": false,
+        "empty": true,
+        "errorCodes": [
+          "EMPTY_CHAIN"
+        ],
+        "warningCodes": []
+      },
+      "actual": {
+        "exit": 2,
+        "errorCodes": [
+          "EMPTY_CHAIN"
+        ],
+        "warningCodes": [],
+        "ok": false,
+        "empty": true
+      },
+      "pass": true
+    },
+    "wrong-schema": {
+      "expected": {
+        "exit": 2,
+        "ok": false,
+        "invalid": true,
+        "errorCodes": [
+          "INVALID_CHAIN"
+        ],
+        "warningCodes": []
+      },
+      "actual": {
+        "exit": 2,
+        "errorCodes": [
+          "INVALID_CHAIN"
+        ],
+        "warningCodes": [],
+        "ok": false,
+        "invalid": true
+      },
+      "pass": true
+    },
+    "superseded-schema": {
+      "expected": {
+        "exit": 2,
+        "ok": false,
+        "invalid": true,
+        "errorCodes": [
+          "UNSUPPORTED_CHAIN_SCHEMA"
+        ],
+        "warningCodes": []
+      },
+      "actual": {
+        "exit": 2,
+        "errorCodes": [
+          "UNSUPPORTED_CHAIN_SCHEMA"
+        ],
+        "warningCodes": [],
+        "ok": false,
+        "invalid": true
+      },
+      "pass": true
+    },
+    "mismatch-emit": {
+      "expected": {
+        "exit": 0,
+        "receipts": 1,
+        "s3Outcome": "MISMATCH",
+        "s3Control": "DID_NOT_FAIL"
+      },
+      "actual": {
+        "exit": 0,
+        "receipts": 1,
+        "s3Outcome": "MISMATCH",
+        "s3Control": "DID_NOT_FAIL"
+      },
+      "pass": true
+    },
+    "mismatch-verify": {
+      "expected": {
+        "exit": 1,
+        "ok": false,
+        "errorCodes": [
+          "CONTROL_DID_NOT_FAIL",
+          "OUTCOME_MISMATCH"
+        ],
+        "warningCodes": [
+          "CONTENT_UNBOUND"
+        ]
+      },
+      "actual": {
+        "exit": 1,
+        "errorCodes": [
+          "OUTCOME_MISMATCH",
+          "CONTROL_DID_NOT_FAIL"
+        ],
+        "warningCodes": [
+          "CONTENT_UNBOUND"
+        ],
+        "ok": false
+      },
+      "pass": true
+    },
+    "rehash-structure": {
+      "expected": {
+        "exit": 0,
+        "ok": true,
+        "receipts": 2,
+        "integrityErrors": 0,
+        "completeness": "checked",
+        "contentBound": false,
+        "errorCodes": [],
+        "warningCodes": [
+          "CONTENT_UNBOUND"
+        ],
+        "terminalDiffers": true
+      },
+      "actual": {
+        "exit": 0,
+        "errorCodes": [],
+        "warningCodes": [
+          "CONTENT_UNBOUND"
+        ],
+        "ok": true,
+        "receipts": 2,
+        "integrityErrors": 0,
+        "completeness": "checked",
+        "contentBound": false,
+        "terminalDiffers": true
+      },
+      "pass": true
+    },
+    "rehash-content": {
+      "expected": {
+        "exit": 1,
+        "ok": false,
+        "integrityErrors": 0,
+        "completeness": "failed",
+        "contentBound": true,
+        "errorCodes": [
+          "CHAIN_INCOMPLETE"
+        ],
+        "warningCodes": []
+      },
+      "actual": {
+        "exit": 1,
+        "errorCodes": [
+          "CHAIN_INCOMPLETE"
+        ],
+        "warningCodes": [],
+        "ok": false,
+        "integrityErrors": 0,
+        "completeness": "failed",
+        "contentBound": true
+      },
+      "pass": true
+    }
+  },
+  "failures": []
+}

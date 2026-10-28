@@ -1,0 +1,78 @@
+{
+  "schema": "workflow-atlas.step-receipt-chain.v0.1.1",
+  "version": "0.1.2",
+  "workflow": {
+    "id": "example-missing-pin",
+    "name": "one step with an unusable input pin"
+  },
+  "declarationBoundary": {
+    "authorSupplied": [
+      "inputs",
+      "expectation.expected",
+      "expectation.frozenAt",
+      "observed",
+      "negativeControl",
+      "omission",
+      "at"
+    ],
+    "computedHere": [
+      "expectation.sha256",
+      "checks",
+      "prevReceiptSha256",
+      "selfSha256"
+    ],
+    "note": "Author-supplied values are hash-bound, not verified. The hashes are unkeyed: they tie the delivered bytes together, so a change made without re-emitting the chain is detected, but a whole chain rewritten and re-hashed is not. They do not show that the declared run happened, that `observed.status` is true, that the expectation was written before the observation, or who wrote it."
+  },
+  "chain": [
+    {
+      "schema": "workflow-atlas.step-receipt.v0.1.1",
+      "step": {
+        "id": "S3",
+        "name": "fetch page 1 (its input pin is missing)",
+        "class": "D",
+        "level": "action"
+      },
+      "inputs": [
+        {
+          "ref": "page1",
+          "sha256": null
+        }
+      ],
+      "expectation": {
+        "stepId": "S3",
+        "expected": {
+          "status": "PASS",
+          "ids": [
+            "ctr"
+          ]
+        },
+        "frozenAt": "2026-10-18T00:00:00Z",
+        "sha256": "a2331a05f1a9acee9ec9b5d04c19672abc63234ae56f6a3994c95acea3655b40"
+      },
+      "observed": {
+        "status": "UNKNOWN",
+        "ids": [],
+        "reason": "input pin missing or unusable — insufficient evidence"
+      },
+      "negativeControl": null,
+      "checks": {
+        "inputPin": {
+          "assessment": "UNUSABLE",
+          "reason": "missing or unusable input pin — the recorded result was forced to UNKNOWN, never a false PASS"
+        },
+        "outcome": {
+          "assessment": "NOT_CHECKED",
+          "reason": "unusable input pin — insufficient evidence; the recorded result was forced to UNKNOWN and is not compared"
+        },
+        "negativeControl": {
+          "assessment": "NOT_PROVIDED",
+          "reason": "no negative control declared for this step"
+        }
+      },
+      "omission": "none observed",
+      "prevReceiptSha256": null,
+      "at": "2026-10-18T00:00:00Z",
+      "selfSha256": "8f88ea0935fa3ecf3d7b9f1d6c95588c37913d7853f6d877ed603e094c448da6"
+    }
+  ]
+}

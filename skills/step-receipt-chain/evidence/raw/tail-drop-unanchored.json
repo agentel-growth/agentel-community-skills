@@ -1,0 +1,11 @@
+{
+  "case": "tail-drop-unanchored",
+  "argv": [
+    "bin/step-receipt-chain.mjs",
+    "verify",
+    "evidence/raw/tail-drop-chain.json"
+  ],
+  "exit": 1,
+  "stdout": "{\n  \"ok\": false,\n  \"receipts\": 1,\n  \"integrity\": {\n    \"ok\": true,\n    \"receiptsChecked\": 1,\n    \"errors\": []\n  },\n  \"outcome\": {\n    \"match\": 1,\n    \"mismatch\": 0,\n    \"notChecked\": 0\n  },\n  \"negativeControl\": {\n    \"failedAsExpected\": 1,\n    \"didNotFail\": 0,\n    \"notProvided\": 0,\n    \"notChecked\": 0\n  },\n  \"completeness\": {\n    \"assessment\": \"unknown\",\n    \"anchor\": null,\n    \"mismatch\": [],\n    \"reason\": \"no external anchor supplied — the delivered bytes are internally consistent, but a valid prefix is indistinguishable from a complete chain\"\n  },\n  \"warnings\": [],\n  \"errors\": [\n    {\n      \"code\": \"COMPLETENESS_UNANCHORED\",\n      \"at\": null,\n      \"step\": null,\n      \"detail\": \"no external anchor supplied — the delivered bytes are internally consistent, but a valid prefix is indistinguishable from a complete chain\"\n    }\n  ]\n}\n",
+  "stderr": ""
+}

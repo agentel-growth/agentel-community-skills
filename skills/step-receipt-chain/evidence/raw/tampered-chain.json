@@ -1,0 +1,138 @@
+{
+  "schema": "workflow-atlas.step-receipt-chain.v0.1.1",
+  "version": "0.1.2",
+  "workflow": {
+    "id": "example-paginated-fetch",
+    "name": "paginated list fetch - 2 steps"
+  },
+  "declarationBoundary": {
+    "authorSupplied": [
+      "inputs",
+      "expectation.expected",
+      "expectation.frozenAt",
+      "observed",
+      "negativeControl",
+      "omission",
+      "at"
+    ],
+    "computedHere": [
+      "expectation.sha256",
+      "checks",
+      "prevReceiptSha256",
+      "selfSha256"
+    ],
+    "note": "Author-supplied values are hash-bound, not verified. The hashes are unkeyed: they tie the delivered bytes together, so a change made without re-emitting the chain is detected, but a whole chain rewritten and re-hashed is not. They do not show that the declared run happened, that `observed.status` is true, that the expectation was written before the observation, or who wrote it."
+  },
+  "chain": [
+    {
+      "schema": "workflow-atlas.step-receipt.v0.1.1",
+      "step": {
+        "id": "S4",
+        "name": "page 2 unavailable",
+        "class": "D",
+        "level": "outcome"
+      },
+      "inputs": [
+        {
+          "ref": "page2",
+          "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        }
+      ],
+      "expectation": {
+        "stepId": "S4",
+        "expected": {
+          "status": "UNKNOWN"
+        },
+        "frozenAt": "2026-10-18T00:00:00Z",
+        "sha256": "6a905e016c726d8ee793092ba257fd6124d19910de80aa97fbda529922bad424"
+      },
+      "observed": {
+        "status": "UNKNOWN",
+        "ids": [],
+        "reason": "page-2 fetch error"
+      },
+      "negativeControl": null,
+      "checks": {
+        "inputPin": {
+          "assessment": "OK",
+          "reason": "at least one input bound by reference (ref + sha256)"
+        },
+        "outcome": {
+          "assessment": "MATCH",
+          "reason": "every field the frozen expectation names is present and equal in the recorded result (subset comparison)",
+          "extraKeys": [
+            "ids",
+            "reason"
+          ]
+        },
+        "negativeControl": {
+          "assessment": "NOT_PROVIDED",
+          "reason": "no negative control declared for this step"
+        }
+      },
+      "omission": "no fallback proposed when page 2 is unavailable",
+      "prevReceiptSha256": "71f3a16e2f8b34f4e897d6873e983919d2d6c00a36adf908e9e52c0c4d53379a",
+      "at": "2026-10-18T00:00:00Z",
+      "selfSha256": "e91c121eade041814413011328166d1bfb6859cfbb0600f05da5c26a08446fc4"
+    },
+    {
+      "schema": "workflow-atlas.step-receipt.v0.1.1",
+      "step": {
+        "id": "S3",
+        "name": "fetch page 1; decide 'is there more' from the continuation pointer",
+        "class": "D",
+        "level": "action"
+      },
+      "inputs": [
+        {
+          "ref": "page1",
+          "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        }
+      ],
+      "expectation": {
+        "stepId": "S3",
+        "expected": {
+          "status": "PASS",
+          "ids": [
+            "ctr"
+          ]
+        },
+        "frozenAt": "2026-10-18T00:00:00Z",
+        "sha256": "a2331a05f1a9acee9ec9b5d04c19672abc63234ae56f6a3994c95acea3655b40"
+      },
+      "observed": {
+        "status": "FAIL",
+        "ids": [
+          "ctr"
+        ]
+      },
+      "negativeControl": {
+        "client": "naive items.length",
+        "observed": {
+          "status": "FAIL",
+          "ids": []
+        },
+        "expectedToFail": true
+      },
+      "checks": {
+        "inputPin": {
+          "assessment": "OK",
+          "reason": "at least one input bound by reference (ref + sha256)"
+        },
+        "outcome": {
+          "assessment": "MATCH",
+          "reason": "every field the frozen expectation names is present and equal in the recorded result (subset comparison)",
+          "extraKeys": []
+        },
+        "negativeControl": {
+          "assessment": "FAILED_AS_EXPECTED",
+          "reason": "the control's recorded result does not satisfy the expectation (a control that cannot fail measures nothing)"
+        }
+      },
+      "omission": "none observed",
+      "prevReceiptSha256": null,
+      "at": "2026-10-18T00:00:00Z",
+      "selfSha256": "71f3a16e2f8b34f4e897d6873e983919d2d6c00a36adf908e9e52c0c4d53379a"
+    }
+  ]
+}

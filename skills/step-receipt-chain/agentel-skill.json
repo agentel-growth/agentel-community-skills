@@ -1,0 +1,42 @@
+{
+  "name": "Step Receipt Chain",
+  "slug": "step-receipt-chain",
+  "version": "0.1.2",
+  "description": "Turn a multi-step workflow into an offline-verifiable receipt chain and verify it in three SEPARATE assessments: integrity (recomputed self hashes and prev links detect a receipt changed WITHOUT re-emitting the chain), outcome (each recorded result is compared against the expectation frozen before the run, subset semantics), and negative control (a control declaring expectedToFail=true must not satisfy that expectation). Completeness requires an anchor supplied from OUTSIDE the chain. The hashes are unkeyed and unsigned: they establish internal consistency, not authenticity — an actor who can rewrite the chain can also recompute every hash, so only an independently recorded terminal digest (--expect-terminal-sha256) binds content, and only relative to that digest; count and step-id anchors constrain shape and order only. It does not establish authorship, timing, that the author-supplied observed values are true, live-source behaviour, or that the work executed or achieved its business outcome.",
+  "category": "verification",
+  "sourceRevision": null,
+  "sourceUrl": null,
+  "repositoryUrl": null,
+  "artifactUrl": null,
+  "sha256": null,
+  "license": "MIT",
+  "compatibility": [
+    "Node.js >= 18 declared; tested locally on the Node version recorded in evidence/raw/summary.json",
+    "Chain document format is workflow-atlas.step-receipt-chain.v0.1.1, unchanged from 0.1.1; 0.1.2 changes the verification result (anchor binding report, CONTENT_UNBOUND warning), not the document format",
+    "Chains from the 0.1.0 format (workflow-atlas.step-receipt-chain.v0.1) are refused with UNSUPPORTED_CHAIN_SCHEMA"
+  ],
+  "permissions": [
+    "read_files",
+    "write_output"
+  ],
+  "dataHandling": "Offline CLI: reads only the JSON paths given on the command line and writes only to stdout/stderr and, when --out is used, one local file. No network, no credentials, no accounts, no analytics, no payments.",
+  "instructions": "Download the pinned .tar.gz and verify its SHA256. Extract, then from the extracted root run: node bin/step-receipt-chain.mjs emit fixtures/workflow.json --out chain.json ; node bin/step-receipt-chain.mjs verify chain.json --expect-steps 2 --expect-ids S3,S4 ; node bin/step-receipt-chain.mjs verify chain.json --expect-terminal-sha256 <digest recorded independently> ; node bin/step-receipt-chain.mjs demo ; node evidence/capture.mjs. Verification reports integrity, outcome, negative control and completeness separately, and states whether the anchor bound structure only (warning CONTENT_UNBOUND) or also content. Without an anchor completeness is unknown and the exit code is 1, not 0. Exit codes: 0 ok (every performed check passed and completeness was anchored), 1 a check failed or could not be established, 2 usage/input/schema error. See README.md for the schema, result fields and error codes.",
+  "knownLimits": [
+    "All hashes and links are unkeyed: they check internal consistency, not authenticity. A chain rewritten and fully re-hashed passes integrity; count and step-id anchors constrain shape and order only.",
+    "Content is bound only against a terminal digest that was recorded independently and before the rewrite; the digest's provenance and trust are separate questions this tool cannot answer.",
+    "Integrity detects a change made without re-emitting the chain; it says nothing about who produced the chain or when.",
+    "An outcome check proves the recorded result satisfies the frozen expectation; it does not prove the expectation was correct.",
+    "A hash binds the expectation's text; it does not show the expectation was written before the observation (frozenAt is an author declaration).",
+    "Author-supplied observed / negativeControl values are hash-bound declarations, not verified facts; the chain states this in its declarationBoundary.",
+    "Completeness holds only against an anchor supplied from outside the chain; a count or hash stored inside the chain is not independent.",
+    "Synthetic fixtures only; no live source is contacted.",
+    "Canonicalisation is a simplified RFC 8785-style serializer (sorted keys, no whitespace); pin one version across runtimes.",
+    "Single-author self-test; not independently replay-tested at submission time, and the Node >= 18 minimum was not run."
+  ],
+  "authorEvidence": [
+    "Expectations are declared and committed BEFORE the run in evidence/declared.json (commit order: the declaration commit precedes the raw-output commit).",
+    "evidence/capture.mjs replays fifteen cases as separate processes and stores one JSON record per case under evidence/raw/ with the exact argv, exit code and verbatim stdout/stderr: normal (structure anchor and content anchor), deliberately invalid (edited + reordered), insufficient evidence, final-receipt removal (anchored and unanchored), empty object, empty chain, wrong schema, superseded 0.1.0 chain, expectation mismatch with a non-failing control, and a modified fully-rehashed chain verified with count/ID anchors and with the original terminal digest.",
+    "evidence/history.json preserves the earlier evidence as hash-verifiable records: set 0.1.0 (original three cases) and set 0.1.1-run-1 (the 10/12 run, preserved before one declaration amendment and one implementation correction). The 0.1.1 run-2 bytes are the delivered 0.1.1 archive.",
+    "0.1.1 run 1 matched 10 of 12 and the two disagreements are disclosed separately as a declaration error and an implementation correction; run 2 and a repeat run matched all twelve and were byte-identical."
+  ]
+}

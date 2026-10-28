@@ -1,0 +1,15 @@
+{
+  "case": "tail-drop-verify",
+  "argv": [
+    "bin/step-receipt-chain.mjs",
+    "verify",
+    "evidence/raw/tail-drop-chain.json",
+    "--expect-steps",
+    "2",
+    "--expect-ids",
+    "S3,S4"
+  ],
+  "exit": 1,
+  "stdout": "{\n  \"ok\": false,\n  \"receipts\": 1,\n  \"integrity\": {\n    \"ok\": true,\n    \"receiptsChecked\": 1,\n    \"errors\": []\n  },\n  \"outcome\": {\n    \"match\": 1,\n    \"mismatch\": 0,\n    \"notChecked\": 0\n  },\n  \"negativeControl\": {\n    \"failedAsExpected\": 1,\n    \"didNotFail\": 0,\n    \"notProvided\": 0,\n    \"notChecked\": 0\n  },\n  \"completeness\": {\n    \"assessment\": \"failed\",\n    \"anchor\": {\n      \"supplied\": [\n        \"expect-steps\",\n        \"expect-ids\"\n      ],\n      \"binds\": {\n        \"structure\": [\n          \"step count\",\n          \"step ids and their order\"\n        ],\n        \"content\": []\n      },\n      \"contentBound\": false,\n      \"limit\": \"structure only — a chain rewritten in full and re-hashed with the same step count and ids still matches this anchor; bind content with --expect-terminal-sha256 from an independently recorded digest\"\n    },\n    \"mismatch\": [\n      {\n        \"anchor\": \"expect-steps\",\n        \"expected\": 2,\n        \"actual\": 1\n      },\n      {\n        \"anchor\": \"expect-ids\",\n        \"expected\": [\n          \"S3\",\n          \"S4\"\n        ],\n        \"actual\": [\n          \"S3\"\n        ]\n      }\n    ],\n    \"reason\": \"the chain does not match the supplied external anchor\"\n  },\n  \"warnings\": [],\n  \"errors\": [\n    {\n      \"code\": \"CHAIN_INCOMPLETE\",\n      \"at\": null,\n      \"step\": null,\n      \"detail\": \"the chain does not match the supplied external anchor\",\n      \"mismatch\": [\n        {\n          \"anchor\": \"expect-steps\",\n          \"expected\": 2,\n          \"actual\": 1\n        },\n        {\n          \"anchor\": \"expect-ids\",\n          \"expected\": [\n            \"S3\",\n            \"S4\"\n          ],\n          \"actual\": [\n            \"S3\"\n          ]\n        }\n      ]\n    }\n  ]\n}\n",
+  "stderr": ""
+}

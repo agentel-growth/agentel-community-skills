@@ -1,0 +1,103 @@
+{
+  "schema": "workflow-atlas.evidence-declaration.v0.3",
+  "declaredAt": "2026-10-28 — authored and committed BEFORE running evidence/capture.mjs (v0.1.2)",
+  "runtime": "Node >= 18 declared; the capture records the exact version used",
+  "runLog": [
+    {
+      "run": 1,
+      "raw": "evidence/history.json, set '0.1.2-run-1'",
+      "result": "All 15 declared dispositions matched (exit 0) — no expectation changed. One packaging defect was found afterwards and fixed before run 2: the derived input documents empty-object.json, empty-chain.json and wrong-schema.json had the same names as the records of the cases that read them, so each record overwrote its own input and the input was not preserved. The inputs are now input-empty-object.json, input-empty-chain.json and input-wrong-schema.json; the three commands below were updated accordingly and every expectation is unchanged. Run 1's records are preserved inside evidence/history.json."
+    }
+  ],
+  "priorRounds": {
+    "0.1.0": "Three cases; its third finding was that outcome and control were advertised but never checked. Evidence: the 0.1.0 archive, and evidence/history.json set '0.1.0'.",
+    "0.1.1": "Twelve cases; 12/12 matched on run 2. Run 1 matched 10/12 and is preserved in evidence/history.json set '0.1.1-run-1'. The two disagreements are different kinds and must stay distinguished: invalid-verify was a DECLARATION that was wrong (a reorder also fails the id anchor, so CHAIN_INCOMPLETE appears; the tool was right and the code was not changed), while superseded-schema was an IMPLEMENTATION correction (a v0.1 chain also failed receipt-level validation, so validateDocument now short-circuits to one reason; the declaration was not changed)."
+  },
+  "exitCodeSemantics": {
+    "0": "every check that was performed passed AND completeness was established by an external anchor",
+    "1": "a check failed (integrity / outcome / control / anchor mismatch) or could not be established (no anchor, insufficient evidence)",
+    "2": "usage, input or schema error — the document was not verified at all"
+  },
+  "cases": {
+    "normal-emit": {
+      "command": "node bin/step-receipt-chain.mjs emit fixtures/workflow.json --out evidence/raw/normal-chain.json",
+      "expect": { "exit": 0, "receipts": 2, "s3Pin": "OK", "s3Outcome": "MATCH", "s4Outcome": "MATCH", "s3Control": "FAILED_AS_EXPECTED", "s4Control": "NOT_PROVIDED" },
+      "why": "S4's expectation names only `status`; subset comparison ignores the extra ids/reason in the recorded result."
+    },
+    "normal-verify": {
+      "command": "node bin/step-receipt-chain.mjs verify evidence/raw/normal-chain.json --expect-steps 2 --expect-ids S3,S4",
+      "expect": { "exit": 0, "ok": true, "receipts": 2, "integrityErrors": 0, "outcomeMatch": 2, "outcomeMismatch": 0, "controlFailedAsExpected": 1, "completeness": "checked", "contentBound": false, "errorCodes": [], "warningCodes": ["CONTENT_UNBOUND"] },
+      "why": "A count-and-ids anchor constrains structure only, so content is not bound and the result says so instead of implying authenticity."
+    },
+    "normal-verify-content": {
+      "command": "node bin/step-receipt-chain.mjs verify evidence/raw/normal-chain.json --expect-terminal-sha256 <the terminal self hash of the chain just emitted>",
+      "expect": { "exit": 0, "ok": true, "completeness": "checked", "contentBound": true, "errorCodes": [], "warningCodes": [] },
+      "why": "The terminal digest binds the terminal receipt and, through the prev links, every earlier receipt's bytes — but only relative to that digest; where the digest came from is a separate question."
+    },
+    "invalid-verify": {
+      "setup": "from normal-chain.json: set chain[0].observed.status = FAIL and reorder so the second receipt comes first",
+      "command": "node bin/step-receipt-chain.mjs verify evidence/raw/tampered-chain.json --expect-steps 2 --expect-ids S3,S4",
+      "expect": { "exit": 1, "ok": false, "errorCodes": ["CHAIN_BROKEN", "CHAIN_INCOMPLETE", "CHECKS_STALE", "OUTCOME_MISMATCH", "RECEIPT_MODIFIED"], "warningCodes": [] },
+      "why": "Editing chain[0] breaks its self hash and makes the stored checks stale; the swap breaks both prev links and also fails the id anchor. This is a change WITHOUT re-hashing — the case the chain can detect."
+    },
+    "insufficient-emit": {
+      "command": "node bin/step-receipt-chain.mjs emit fixtures/workflow-missing-pin.json --out evidence/raw/insufficient-chain.json",
+      "expect": { "exit": 0, "receipts": 1, "s3ObservedStatus": "UNKNOWN", "s3Pin": "UNUSABLE", "s3Outcome": "NOT_CHECKED", "s3Control": "NOT_PROVIDED" },
+      "why": "An unusable input pin forces the recorded result to UNKNOWN and the outcome check to NOT_CHECKED — never a false PASS, and never a promoted verified success."
+    },
+    "tail-drop-verify": {
+      "setup": "from normal-chain.json: remove only the final receipt (a valid prefix)",
+      "command": "node bin/step-receipt-chain.mjs verify evidence/raw/tail-drop-chain.json --expect-steps 2 --expect-ids S3,S4",
+      "expect": { "exit": 1, "ok": false, "receipts": 1, "integrityErrors": 0, "errorCodes": ["CHAIN_INCOMPLETE"], "warningCodes": [] },
+      "why": "The prefix is internally intact; only the external anchor catches the truncation. This is the case 0.1.0 reported as ok."
+    },
+    "tail-drop-unanchored": {
+      "command": "node bin/step-receipt-chain.mjs verify evidence/raw/tail-drop-chain.json",
+      "expect": { "exit": 1, "ok": false, "receipts": 1, "integrityErrors": 0, "errorCodes": ["COMPLETENESS_UNANCHORED"], "warningCodes": [] },
+      "why": "With no anchor the tool must not claim success: completeness is reported unknown and exit is 1, not 0."
+    },
+    "empty-object": {
+      "command": "node bin/step-receipt-chain.mjs verify evidence/raw/input-empty-object.json",
+      "expect": { "exit": 2, "ok": false, "invalid": true, "errorCodes": ["INVALID_CHAIN"], "warningCodes": [] },
+      "why": "0.1.0 returned ok:true with exit 0 for {} — the defect this case locks down.",
+      "amendment": "INPUT PATH CHANGED AFTER RUN 1 (2026-10-28), disclosed; the expectation is unchanged. Run 1 read `evidence/raw/empty-object.json`, and the case record of the same name overwrote that input, so the input was not preserved in the package. The derived input is now `input-empty-object.json`. The case was re-run; no expectation changed."
+    },
+    "empty-chain": {
+      "command": "node bin/step-receipt-chain.mjs verify evidence/raw/input-empty-chain.json",
+      "expect": { "exit": 2, "ok": false, "empty": true, "errorCodes": ["EMPTY_CHAIN"], "warningCodes": [] },
+      "why": "An explicitly empty chain is reported as empty / no work with completeness unknown, not as a checked chain.",
+      "amendment": "INPUT PATH CHANGED AFTER RUN 1 (2026-10-28), disclosed; the expectation is unchanged. Same name collision as empty-object: the case record overwrote the input. The derived input is now `input-empty-chain.json`."
+    },
+    "wrong-schema": {
+      "command": "node bin/step-receipt-chain.mjs verify evidence/raw/input-wrong-schema.json",
+      "expect": { "exit": 2, "ok": false, "invalid": true, "errorCodes": ["INVALID_CHAIN"], "warningCodes": [] },
+      "why": "0.1.0 crashed with a TypeError (exit 1) on a non-array chain; a schema error is now a documented input error (exit 2), never a success and never a crash.",
+      "amendment": "INPUT PATH CHANGED AFTER RUN 1 (2026-10-28), disclosed; the expectation is unchanged. Same name collision as empty-object: the case record overwrote the input. The derived input is now `input-wrong-schema.json`."
+    },
+    "superseded-schema": {
+      "command": "node bin/step-receipt-chain.mjs verify fixtures/legacy-0.1.0-chain.json",
+      "expect": { "exit": 2, "ok": false, "invalid": true, "errorCodes": ["UNSUPPORTED_CHAIN_SCHEMA"], "warningCodes": [] },
+      "why": "The preserved 0.1.0 chain is refused rather than silently reinterpreted. The fixture is byte-identical to evidence/raw/normal-chain.json in the 0.1.0 package (sha256 d8b46983e6fe3635021d735802642a7f96ae03bdaf413d6581a5b4299e7bacbe)."
+    },
+    "mismatch-emit": {
+      "command": "node bin/step-receipt-chain.mjs emit fixtures/workflow-mismatch.json --out evidence/raw/mismatch-chain.json",
+      "expect": { "exit": 0, "receipts": 1, "s3Outcome": "MISMATCH", "s3Control": "DID_NOT_FAIL" },
+      "why": "emit records and reports; it does not execute anything. The false PASS is no longer presented as a checked result. (0.1.0 reported PASS with a control that never failed, and no errors.)"
+    },
+    "mismatch-verify": {
+      "command": "node bin/step-receipt-chain.mjs verify evidence/raw/mismatch-chain.json --expect-steps 1 --expect-ids S3",
+      "expect": { "exit": 1, "ok": false, "errorCodes": ["CONTROL_DID_NOT_FAIL", "OUTCOME_MISMATCH"], "warningCodes": ["CONTENT_UNBOUND"] }
+    },
+    "rehash-structure": {
+      "setup": "from normal-chain.json: set chain[0].observed.reviewProbe, then recompute every derived check, every self hash and every prev link — a full rewrite by someone holding the tool",
+      "command": "node bin/step-receipt-chain.mjs verify evidence/raw/rehashed-chain.json --expect-steps 2 --expect-ids S3,S4",
+      "expect": { "exit": 0, "ok": true, "receipts": 2, "integrityErrors": 0, "completeness": "checked", "contentBound": false, "errorCodes": [], "warningCodes": ["CONTENT_UNBOUND"], "terminalDiffers": true },
+      "why": "The reported probe, turned into a regression. Unkeyed hashes and links check internal consistency, so a rewrite that recomputes them passes integrity; count and ids constrain shape and order only. This case documents the limit; it does not call the rewrite valid."
+    },
+    "rehash-content": {
+      "command": "node bin/step-receipt-chain.mjs verify evidence/raw/rehashed-chain.json --expect-terminal-sha256 <the ORIGINAL terminal self hash, retained from before the rewrite>",
+      "expect": { "exit": 1, "ok": false, "integrityErrors": 0, "completeness": "failed", "contentBound": true, "errorCodes": ["CHAIN_INCOMPLETE"], "warningCodes": [] },
+      "why": "The same rewritten chain is caught by an independently retained digest: integrity still reports the bytes as internally consistent, yet the content no longer matches. Whether that digest was recorded independently and before the rewrite is outside this tool."
+    }
+  }
+}

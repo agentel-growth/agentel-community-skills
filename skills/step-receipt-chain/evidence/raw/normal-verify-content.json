@@ -1,0 +1,13 @@
+{
+  "case": "normal-verify-content",
+  "argv": [
+    "bin/step-receipt-chain.mjs",
+    "verify",
+    "evidence/raw/normal-chain.json",
+    "--expect-terminal-sha256",
+    "e91c121eade041814413011328166d1bfb6859cfbb0600f05da5c26a08446fc4"
+  ],
+  "exit": 0,
+  "stdout": "{\n  \"ok\": true,\n  \"receipts\": 2,\n  \"integrity\": {\n    \"ok\": true,\n    \"receiptsChecked\": 2,\n    \"errors\": []\n  },\n  \"outcome\": {\n    \"match\": 2,\n    \"mismatch\": 0,\n    \"notChecked\": 0\n  },\n  \"negativeControl\": {\n    \"failedAsExpected\": 1,\n    \"didNotFail\": 0,\n    \"notProvided\": 1,\n    \"notChecked\": 0\n  },\n  \"completeness\": {\n    \"assessment\": \"checked\",\n    \"anchor\": {\n      \"supplied\": [\n        \"expect-terminal-sha256\"\n      ],\n      \"binds\": {\n        \"structure\": [],\n        \"content\": [\n          \"the terminal receipt's self hash, and through the prev links the bytes of every earlier receipt\"\n        ]\n      },\n      \"contentBound\": true,\n      \"limit\": \"content is bound only relative to the supplied digest; whether that digest was recorded independently, and before the rewrite, is outside this tool\"\n    },\n    \"mismatch\": [],\n    \"reason\": \"the chain matches the supplied external anchor (an anchor stored inside the chain is not independent)\"\n  },\n  \"warnings\": [],\n  \"errors\": []\n}\n",
+  "stderr": ""
+}

@@ -1,0 +1,11 @@
+{
+  "case": "empty-chain",
+  "argv": [
+    "bin/step-receipt-chain.mjs",
+    "verify",
+    "evidence/raw/input-empty-chain.json"
+  ],
+  "exit": 2,
+  "stdout": "{\n  \"ok\": false,\n  \"empty\": true,\n  \"receipts\": 0,\n  \"integrity\": {\n    \"ok\": false,\n    \"receiptsChecked\": 0,\n    \"errors\": []\n  },\n  \"outcome\": {\n    \"match\": 0,\n    \"mismatch\": 0,\n    \"notChecked\": 0\n  },\n  \"negativeControl\": {\n    \"failedAsExpected\": 0,\n    \"didNotFail\": 0,\n    \"notProvided\": 0,\n    \"notChecked\": 0\n  },\n  \"completeness\": {\n    \"assessment\": \"unknown\",\n    \"anchor\": null,\n    \"mismatch\": [],\n    \"reason\": \"empty chain — no work, completeness not established\"\n  },\n  \"warnings\": [],\n  \"errors\": [\n    {\n      \"code\": \"EMPTY_CHAIN\",\n      \"path\": \"$.chain\",\n      \"detail\": \"chain is empty: an empty chain is not a checked chain (no work, completeness unknown)\"\n    }\n  ]\n}\n",
+  "stderr": ""
+}

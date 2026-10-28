@@ -1,0 +1,93 @@
+{
+  "schema": "workflow-atlas.step-receipt-chain.v0.1.1",
+  "version": "0.1.2",
+  "workflow": {
+    "id": "adversarial-mismatch",
+    "name": "expectation deliberately different from the recorded result, with a control that cannot fail"
+  },
+  "declarationBoundary": {
+    "authorSupplied": [
+      "inputs",
+      "expectation.expected",
+      "expectation.frozenAt",
+      "observed",
+      "negativeControl",
+      "omission",
+      "at"
+    ],
+    "computedHere": [
+      "expectation.sha256",
+      "checks",
+      "prevReceiptSha256",
+      "selfSha256"
+    ],
+    "note": "Author-supplied values are hash-bound, not verified. The hashes are unkeyed: they tie the delivered bytes together, so a change made without re-emitting the chain is detected, but a whole chain rewritten and re-hashed is not. They do not show that the declared run happened, that `observed.status` is true, that the expectation was written before the observation, or who wrote it."
+  },
+  "chain": [
+    {
+      "schema": "workflow-atlas.step-receipt.v0.1.1",
+      "step": {
+        "id": "S3",
+        "name": "fetch page 1; decide 'is there more' from the continuation pointer",
+        "class": "D",
+        "level": "action"
+      },
+      "inputs": [
+        {
+          "ref": "page1",
+          "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        }
+      ],
+      "expectation": {
+        "stepId": "S3",
+        "expected": {
+          "wanted": "completely different"
+        },
+        "frozenAt": "2026-10-27T00:00:00Z",
+        "sha256": "b321ba786e9be8aaf6d103419cd30045112d8fe700ad124e1d44e727feb1d545"
+      },
+      "observed": {
+        "status": "PASS",
+        "ids": [
+          "ctr"
+        ]
+      },
+      "negativeControl": {
+        "client": "control whose recorded result equals the expectation, so it cannot fail",
+        "observed": {
+          "wanted": "completely different"
+        },
+        "expectedToFail": true
+      },
+      "checks": {
+        "inputPin": {
+          "assessment": "OK",
+          "reason": "at least one input bound by reference (ref + sha256)"
+        },
+        "outcome": {
+          "assessment": "MISMATCH",
+          "reason": "the recorded result does not satisfy the frozen expectation (subset comparison over the fields the expectation names)",
+          "missing": [
+            {
+              "path": "wanted",
+              "expected": "completely different"
+            }
+          ],
+          "different": [],
+          "extraKeys": [
+            "status",
+            "ids"
+          ]
+        },
+        "negativeControl": {
+          "assessment": "DID_NOT_FAIL",
+          "reason": "the control's recorded result SATISFIES the expectation — this control cannot fail the check it is attached to"
+        }
+      },
+      "omission": "none observed",
+      "prevReceiptSha256": null,
+      "at": "2026-10-27T00:00:00Z",
+      "selfSha256": "a2ad4458eb33ead3fbd9c32da9723cb563e63ebdd02269326638e67624e0b221"
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "case": "mismatch-verify",
+  "argv": [
+    "bin/step-receipt-chain.mjs",
+    "verify",
+    "evidence/raw/mismatch-chain.json",
+    "--expect-steps",
+    "1",
+    "--expect-ids",
+    "S3"
+  ],
+  "exit": 1,
+  "stdout": "{\n  \"ok\": false,\n  \"receipts\": 1,\n  \"integrity\": {\n    \"ok\": true,\n    \"receiptsChecked\": 1,\n    \"errors\": []\n  },\n  \"outcome\": {\n    \"match\": 0,\n    \"mismatch\": 1,\n    \"notChecked\": 0\n  },\n  \"negativeControl\": {\n    \"failedAsExpected\": 0,\n    \"didNotFail\": 1,\n    \"notProvided\": 0,\n    \"notChecked\": 0\n  },\n  \"completeness\": {\n    \"assessment\": \"checked\",\n    \"anchor\": {\n      \"supplied\": [\n        \"expect-steps\",\n        \"expect-ids\"\n      ],\n      \"binds\": {\n        \"structure\": [\n          \"step count\",\n          \"step ids and their order\"\n        ],\n        \"content\": []\n      },\n      \"contentBound\": false,\n      \"limit\": \"structure only — a chain rewritten in full and re-hashed with the same step count and ids still matches this anchor; bind content with --expect-terminal-sha256 from an independently recorded digest\"\n    },\n    \"mismatch\": [],\n    \"reason\": \"the chain matches the supplied external anchor (an anchor stored inside the chain is not independent)\"\n  },\n  \"warnings\": [\n    {\n      \"code\": \"CONTENT_UNBOUND\",\n      \"detail\": \"structure only — a chain rewritten in full and re-hashed with the same step count and ids still matches this anchor; bind content with --expect-terminal-sha256 from an independently recorded digest\"\n    }\n  ],\n  \"errors\": [\n    {\n      \"code\": \"OUTCOME_MISMATCH\",\n      \"at\": 0,\n      \"step\": \"S3\",\n      \"detail\": \"the recorded result does not satisfy the frozen expectation (subset comparison over the fields the expectation names)\",\n      \"missing\": [\n        {\n          \"path\": \"wanted\",\n          \"expected\": \"completely different\"\n        }\n      ],\n      \"different\": []\n    },\n    {\n      \"code\": \"CONTROL_DID_NOT_FAIL\",\n      \"at\": 0,\n      \"step\": \"S3\",\n      \"detail\": \"the control's recorded result SATISFIES the expectation — this control cannot fail the check it is attached to\"\n    }\n  ]\n}\n",
+  "stderr": ""
+}

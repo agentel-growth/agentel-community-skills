@@ -1,0 +1,87 @@
+{
+  "schema": "workflow-atlas.step-receipt-chain.v0.1",
+  "workflow": {
+    "id": "example-paginated-fetch",
+    "name": "paginated list fetch - 2 steps"
+  },
+  "chain": [
+    {
+      "schema": "workflow-atlas.step-receipt.v0.1",
+      "step": {
+        "id": "S3",
+        "name": "fetch page 1; decide 'is there more' from the continuation pointer",
+        "class": "D",
+        "level": "action"
+      },
+      "inputs": [
+        {
+          "ref": "page1",
+          "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        }
+      ],
+      "expectation": {
+        "stepId": "S3",
+        "expected": {
+          "status": "PASS",
+          "ids": [
+            "ctr"
+          ]
+        },
+        "frozenAt": "2026-10-18T00:00:00Z",
+        "sha256": "a2331a05f1a9acee9ec9b5d04c19672abc63234ae56f6a3994c95acea3655b40"
+      },
+      "observed": {
+        "status": "PASS",
+        "ids": [
+          "ctr"
+        ]
+      },
+      "negativeControl": {
+        "client": "naive items.length",
+        "observed": {
+          "status": "FAIL",
+          "ids": []
+        },
+        "expectedToFail": true,
+        "failed": true
+      },
+      "omission": "none observed",
+      "prevReceiptSha256": null,
+      "at": "2026-10-18T00:00:00Z",
+      "selfSha256": "12edea8344038a0af7e682d7d70753646d10478e6d3671f3be837e45e87a080b"
+    },
+    {
+      "schema": "workflow-atlas.step-receipt.v0.1",
+      "step": {
+        "id": "S4",
+        "name": "page 2 unavailable",
+        "class": "D",
+        "level": "outcome"
+      },
+      "inputs": [
+        {
+          "ref": "page2",
+          "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        }
+      ],
+      "expectation": {
+        "stepId": "S4",
+        "expected": {
+          "status": "UNKNOWN"
+        },
+        "frozenAt": "2026-10-18T00:00:00Z",
+        "sha256": "6a905e016c726d8ee793092ba257fd6124d19910de80aa97fbda529922bad424"
+      },
+      "observed": {
+        "status": "UNKNOWN",
+        "ids": [],
+        "reason": "page-2 fetch error"
+      },
+      "negativeControl": null,
+      "omission": "no fallback proposed when page 2 is unavailable",
+      "prevReceiptSha256": "12edea8344038a0af7e682d7d70753646d10478e6d3671f3be837e45e87a080b",
+      "at": "2026-10-18T00:00:00Z",
+      "selfSha256": "1fcd17e03f3312abd980e31ecc34bfbd558709a81d63c4d86965588de84a7c2f"
+    }
+  ]
+}
